@@ -28,9 +28,14 @@ class GameManager:
 
         if self.current_player == self.human_symbol:
             if row is not None and col is not None:
+                if not (0 <= row < self.size and 0 <= col < self.size):
+                    raise ValueError(
+                        f"Coordonnées hors grille ! Entrez des valeurs entre 0 et {self.size - 1}"
+                    )
+
                 success = self.board.place_symbol(row, col, self.human_symbol)
                 if not success:
-                    raise ValueError("Case déjà occupée")
+                    raise ValueError("Cette case est déjà occupée !")
         else:
             r, c = self.ai.choose_move(self.board)
             self.board.place_symbol(r, c, self.ai_symbol)
