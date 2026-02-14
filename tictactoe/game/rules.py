@@ -1,4 +1,3 @@
-from typing import List, Optional
 from .board import Board
 
 class Rules:
@@ -9,49 +8,37 @@ class Rules:
         size = board.size
         grid = board.grid
 
-        # Vérifier les lignes
+        directions = [
+            (0, 1),
+            (1, 0),
+            (1, 1),
+            (1, -1),
+        ]
+
         for row in range(size):
-            if self._check_sequence([grid[row][col] for col in range(size)], symbol):
-                return True
+            for col in range(size):
+                if grid[row][col] != symbol:
+                    continue
 
-        # Vérifier les colonnes
-        for col in range(size):
-            if self._check_sequence([grid[row][col] for row in range(size)], symbol):
-                return True
-
-        # Vérifier diagonales
-        for row in range(size - self.win_length + 1):
-            for col in range(size - self.win_length + 1):
-                # Diagonale principale
-                if self._check_diagonal(grid, row, col, symbol, 1, 1):
-                    return True
-                # Diagonale inverse
-                if self._check_diagonal(grid, row + self.win_length - 1, col, symbol, -1, 1):
-                    return True
+                for d_row, d_col in directions:
+                    if self._check_direction(grid, row, col, symbol, d_row, d_col):
+                        return True
 
         return False
 
-    def _check_sequence(self, sequence: List[Optional[str]], symbol: str) -> bool:
+    def _check_direction(self, grid, row, col, symbol, d_row, d_col):
         count = 0
-        for cell in sequence:
-            if cell == symbol:
-                count += 1
-                if count >= self.win_length:
-                    return True
-            else:
-                count = 0
-        return False
+        size = len(grid)
 
-    def _check_diagonal(self, grid, start_row, start_col, symbol, row_inc, col_inc):
-        count = 0
-        row, col = start_row, start_col
-        while 0 <= row < len(grid) and 0 <= col < len(grid):
+        while 0 <= row < size and 0 <= col < size:
             if grid[row][col] == symbol:
                 count += 1
-                if count >= self.win_length:
+                if count == self.win_length:
                     return True
             else:
-                count = 0
-            row += row_inc
-            col += col_inc
+                break
+
+            row += d_row
+            col += d_col
+
         return False

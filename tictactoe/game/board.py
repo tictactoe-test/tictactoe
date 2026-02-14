@@ -30,8 +30,5 @@ class Board:
 
         return empty_cells
 
-    def is_full(self) -> bool:
-        return all(cell is not None for row in self.grid for cell in row)
-
     def get_symbol(self, row: int, col: int) -> Optional[str]:
         return self.grid[row][col]

@@ -20,6 +20,7 @@ class GameManager:
         self.ai_symbol = "O" if human_symbol == "X" else "X"
         self.current_player = "X"
         self.game_over = False
+        self.move_count = 0
 
     def make_move(self, row: int = None, col: int = None):
         if self.game_over:
@@ -34,13 +35,17 @@ class GameManager:
             r, c = self.ai.choose_move(self.board)
             self.board.place_symbol(r, c, self.ai_symbol)
 
+        self.move_count += 1
+        
         # Vérifier victoire
-        if self.rules.check_winner(self.board, self.current_player):
-            self.game_over = True
-            return f"{self.current_player} a gagné !"
+        if self.move_count >= (self.rules.win_length * 2 - 1):
+            if self.rules.check_winner(self.board, self.current_player):
+                self.game_over = True
+                return f"{self.current_player} a gagné !"
+
 
         # Vérifier égalité
-        if self.board.is_full():
+        if self.move_count == self.size * self.size:
             self.game_over = True
             return "Égalité !"
 
