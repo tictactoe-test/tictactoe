@@ -1,17 +1,13 @@
-from tictactoe.game.board import Board
-from tictactoe.game.rules import Rules
-from tictactoe.game.ai import RandomAI
+from tictactoe.game.game_manager import GameManager
 
-b = Board(3)
-ai = RandomAI()
+gm = GameManager(3)
+gm.start_game("X")
 
-b.place_symbol(0, 0, "X")
-b.place_symbol(0, 1, "X")
-b.place_symbol(0, 2, "X")
+gm.make_move(0,0)
+gm.make_move()
 
-row, col = ai.choose_move(b)
-b.place_symbol(row, col, "O")
+for row in gm.board.grid:
+    print(row)
 
-r = Rules(win_length=3)
-print("X a gagné ?", r.check_winner(b, "X"))
-print("O a joué en :", (row, col))
+print("Current player:", gm.current_player)
+print("Game over:", gm.game_over)
