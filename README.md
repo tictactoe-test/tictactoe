@@ -10,8 +10,6 @@ bash :
 
 ## Lancer le jeu
 
-- Active l’environnement virtuel (Windows) :
-    "& .\venv\Scripts\Activate.ps1"
 - Lancer le jeu :
     "python -m tictactoe.main"
 
